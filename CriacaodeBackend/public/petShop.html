@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="dados-container"></div>
+    <h1>Bem vindo a nossa tela de CADASTRO</h1>
+    <form action='/cadastro' method='post'>
+        Nome do Tutor: <input type='text' name='tutor' id='tutor'><br>
+        Endereço: <input type='text' name='endereco' id='endereco'> <br>
+        Nome do Pet: <input type='text' name='pet' id='nomePet'> <br>
+        Raça: <input type='text' name='raca' id='raca'>  <br>
+        Sexo: <input type='text' name='sexo' id='sexo'>  <br>
+        Contato: <input type='text' name='contato' id='contato'> <br>
+         <input type='submit' value='Enviar'>
+
+    </form>
+    <script>
+        // Solicitar dados do backend
+        fetch('http://localhost:3000/cadastro')
+            .then(response => response.json())
+            .then(data => {
+                // Construir tabela com os dados recebidos
+                const tabela = document.createElement('table');
+                tabela.border = '1';
+
+                // Cabeçalho da tabela
+                const cabecalho = tabela.createTHead();
+                const linhaCabecalho = cabecalho.insertRow();
+                for (const chave in data) {
+                    const th = document.createElement('th');
+                    th.textContent = chave;
+                    linhaCabecalho.appendChild(th);
+                }
+
+                // Linha de dados
+                const linhaDados = tabela.insertRow();
+                for (const chave in data) {
+                    const td = linhaDados.insertCell();
+                    td.textContent = data[chave];
+                }
+
+                // Adicionar tabela à div
+                document.getElementById('dados-container').appendChild(tabela);
+            })
+            .catch(error => console.error('Erro:', error));
+    </script>
+</body>
+
+</html>
